@@ -22,9 +22,9 @@ export const getContactByIdController = async (req, res, next) => {
   const id = req.params.contactId;
 
   if (!isValidObjectId(id)) {
-    next(createHttpError(400, `${id} is not valid`));
-    return;
+    return next(createHttpError(400, `${id} is not valid`));
   }
+
   const contactById = await getContactById(id);
 
   if (!contactById) {
