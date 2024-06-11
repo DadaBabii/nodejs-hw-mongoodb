@@ -1,4 +1,3 @@
-import { isValidObjectId } from 'mongoose';
 import createHttpError from 'http-errors';
 import {
   createContact,
@@ -8,8 +7,19 @@ import {
   patchContactById,
 } from '../services/contacts.js';
 
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
+
 export const getAllContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query);
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  });
 
   res.json({
     status: 200,
@@ -21,10 +31,6 @@ export const getAllContactsController = async (req, res) => {
 export const getContactByIdController = async (req, res, next) => {
   const id = req.params.contactId;
 
-  if (!isValidObjectId(id)) {
-    next(createHttpError(400, `${id} is not valid`));
-    return;
-  }
   const contactById = await getContactById(id);
 
   if (!contactById) {
@@ -52,10 +58,6 @@ export const createContactsController = async (req, res) => {
 export const deleteContactByIdController = async (req, res, next) => {
   const id = req.params.contactId;
 
-  if (!isValidObjectId(id)) {
-    next(createHttpError(400, `${id} is not valid`));
-    return;
-  }
   const contactById = await deleteContactById(id);
 
   if (!contactById) {
@@ -69,10 +71,6 @@ export const deleteContactByIdController = async (req, res, next) => {
 export const patchContactByIdController = async (req, res, next) => {
   const id = req.params.contactId;
 
-  if (!isValidObjectId(id)) {
-    next(createHttpError(400, `${id} is not valid`));
-    return;
-  }
   const contactById = await patchContactById(id, req.body);
 
   if (!contactById) {
