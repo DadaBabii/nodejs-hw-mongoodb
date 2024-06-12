@@ -8,6 +8,7 @@ const parseContactType = (type) => {
 
 const parseIsFav = (boolean) => {
   const isBoolFavourite = (boolean) => ['true', 'false'].includes(boolean);
+  //   if (!isBoolFavourite) return; чи треба це перевіряти?
 
   if (isBoolFavourite(boolean)) return boolean === 'true' ? 'true' : 'false';
 };
