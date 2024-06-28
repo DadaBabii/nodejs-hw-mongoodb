@@ -25,6 +25,8 @@ const contactsSchema = new Schema(
       default: 'other',
       enum: ['personal', 'home', 'other'],
     },
+
+    userId: { type: Schema.Types.ObjectId, ref: 'users' }, // нова властивість
   },
   {
     timestamps: true,

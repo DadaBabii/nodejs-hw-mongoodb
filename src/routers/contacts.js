@@ -12,19 +12,23 @@ import { validateMongooseId } from '../middlewares/validateMongooseId.js';
 import { createContactShema } from '../validation/createContactShema.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { updateContactShema } from '../validation/updateContactShema.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { checkUser } from '../middlewares/checkUser.js';
 
 const contactsRouter = Router();
 
-contactsRouter.use('/contacts/:contactId', validateMongooseId('contactId'));
+contactsRouter.use(authenticate);
 
-contactsRouter.get('/contacts', ctrlWrapper(getAllContactsController));
+contactsRouter.use('/:contactId', validateMongooseId('contactId'));
 
-contactsRouter.get('/contacts/:contactId', ctrlWrapper(getContactByIdController));
+contactsRouter.get('/', ctrlWrapper(getAllContactsController));
 
-contactsRouter.post('/contacts', validateBody(createContactShema), ctrlWrapper(createContactsController));
+contactsRouter.get('/:contactId', ctrlWrapper(getContactByIdController));
 
-contactsRouter.delete('/contacts/:contactId', ctrlWrapper(deleteContactByIdController));
+contactsRouter.post('', validateBody(createContactShema), ctrlWrapper(createContactsController));
 
-contactsRouter.patch('/contacts/:contactId', validateBody(updateContactShema), ctrlWrapper(patchContactByIdController));
+contactsRouter.delete('/:contactId', ctrlWrapper(deleteContactByIdController));
+
+contactsRouter.patch('/:contactId', validateBody(updateContactShema), ctrlWrapper(patchContactByIdController));
 
 export default contactsRouter;

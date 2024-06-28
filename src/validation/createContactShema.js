@@ -6,4 +6,5 @@ export const createContactShema = joi.object({
   email: joi.string().min(3).max(20),
   isFavourite: joi.boolean(),
   contactType: joi.string().valid('personal', 'home', 'other'),
+  userId: joi.string(),
 });
