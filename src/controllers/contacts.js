@@ -52,6 +52,7 @@ const setAuthContactId = (req) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const authContactId = setAuthContactId(req);
+
   const contactById = await getContactById(authContactId);
 
   if (!contactById) {
@@ -67,8 +68,8 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactsController = async (req, res) => {
-  const contact = await createContact({ ...req.body, userId: req.user._id });
-  res.json({
+  const contact = await createContact({ userId: req.user._id, ...req.body });
+  res.status(201).json({
     status: 201,
     message: 'Successfully created a new contact!',
     data: contact,
@@ -78,7 +79,7 @@ export const createContactsController = async (req, res) => {
 export const deleteContactByIdController = async (req, res, next) => {
   const authContactId = setAuthContactId(req);
 
-  const contactById = await deleteContactById(authContactId._id);
+  const contactById = await deleteContactById(authContactId);
 
   if (!contactById) {
     next(createHttpError(404, `Contact with id : ${authContactId} not found`));
@@ -91,7 +92,7 @@ export const deleteContactByIdController = async (req, res, next) => {
 export const patchContactByIdController = async (req, res, next) => {
   const authContactId = setAuthContactId(req);
 
-  const contactById = await patchContactById(authContactId._id, req.body);
+  const contactById = await patchContactById(authContactId, req.body);
 
   if (!contactById) {
     next(createHttpError(404, `Contact with id : ${authContactId._id} not found`));
