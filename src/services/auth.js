@@ -107,7 +107,7 @@ export const requestResetToken = async (email) => {
     },
     env(ENV_VARS.JWT_SECRET),
     {
-      expiresIn: '5m',
+      expiresIn: '25m',
     },
   );
 
@@ -124,4 +124,28 @@ export const requestResetToken = async (email) => {
     console.log(error);
     throw createHttpError(500, 'Failed to send the email, please try again later.');
   }
+};
+
+export const resetPassword = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, env(ENV_VARS.JWT_SECRET));
+  } catch (err) {
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
+  }
+
+  const user = await UsersCollection.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await UsersCollection.updateOne({ _id: user._id }, { password: encryptedPassword });
 };
