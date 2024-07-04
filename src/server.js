@@ -10,6 +10,7 @@ import { ENV_VARS } from './constants/constants.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import rootRouter from './routers/index.js';
+import { UPLOAD_DIR } from './constants/index.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ export const setupServer = () => {
 
   app.use(cors());
   app.use(cookieParser());
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.get('/', (req, res, next) => {
     res.send('Welcome');

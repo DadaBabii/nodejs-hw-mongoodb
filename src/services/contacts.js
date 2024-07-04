@@ -1,6 +1,7 @@
 import { SORT_ORDER } from '../constants/constants.js';
 import { ContactsCollection } from '../db/models/contacts.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { saveFileToCloudinary, saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 
 export const getAllContacts = async ({
   page = 1,
@@ -43,8 +44,10 @@ export const getContactById = async (authContactId) => {
   const contact = await ContactsCollection.findOne(authContactId);
   return contact;
 };
-export const createContact = async (payload, userId) => {
-  const newContact = await ContactsCollection.create({ userId, ...payload });
+export const createContact = async ({ userId, photo, ...payload }) => {
+  const url = await saveFileToCloudinary(photo);
+
+  const newContact = await ContactsCollection.create({ ...payload, userId: userId, photo: url });
   return newContact;
 };
 
@@ -54,9 +57,17 @@ export const deleteContactById = async (authContactId) => {
   return deleteContact;
 };
 
-export const patchContactById = async (authContactId, payload) => {
+export const patchContactById = async (authContactId, payload, options = {}) => {
   const patchContact = await ContactsCollection.findOneAndUpdate(authContactId, payload, {
     new: true,
+    includeResultMetadata: true,
+    ...options,
   });
-  return patchContact;
+
+  if (!patchContact || !patchContact.value) return null;
+
+  return {
+    contact: patchContact.value,
+    isNew: Boolean(patchContact?.lastErrorObject?.upserted),
+  };
 };

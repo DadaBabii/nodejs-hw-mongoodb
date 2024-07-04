@@ -26,7 +26,8 @@ const contactsSchema = new Schema(
       enum: ['personal', 'home', 'other'],
     },
 
-    userId: { type: Schema.Types.ObjectId, ref: 'users' }, // нова властивість
+    userId: { type: Schema.Types.ObjectId, ref: 'users' },
+    photo: { type: String },
   },
   {
     timestamps: true,

@@ -10,6 +10,10 @@ import {
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToUploadDir.js';
+import { env } from '../utils/env.js';
+// import { ENABLE_CLOUDINARY } from '../constants/constants.js';
 
 export const getAllContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -68,7 +72,9 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactsController = async (req, res) => {
-  const contact = await createContact({ userId: req.user._id, ...req.body });
+  const { body, file } = req;
+
+  const contact = await createContact({ userId: req.user._id, photo: file, ...body });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a new contact!',
@@ -91,16 +97,25 @@ export const deleteContactByIdController = async (req, res, next) => {
 
 export const patchContactByIdController = async (req, res, next) => {
   const authContactId = setAuthContactId(req);
+  const photo = req.file;
+  let photoUrl;
 
-  const contactById = await patchContactById(authContactId, req.body);
+  if (photo) {
+    photoUrl = await saveFileToCloudinary(photo);
+  }
+
+  const contactById = await patchContactById(authContactId, {
+    ...req.body,
+    photo: photoUrl,
+  });
 
   if (!contactById) {
     next(createHttpError(404, `Contact with id : ${authContactId._id} not found`));
     return;
   }
-  res.json({
+  res.status(200).json({
     status: 200,
-    message: `Successfully patched contact with id : ${authContactId._id}!`,
-    data: contactById,
+    message: `Successfully patched a contact!`,
+    data: contactById.contact,
   });
 };
