@@ -27,7 +27,6 @@ export const SMTP = {
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
 };
-export const ENABLE_CLOUDINARY = 'ENABLE_CLOUDINARY';
 
 export const CLOUDINARY = {
   CLOUD_NAME: 'CLOUD_NAME',
