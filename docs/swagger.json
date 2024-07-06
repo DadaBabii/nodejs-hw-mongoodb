@@ -45,10 +45,7 @@
                 "type": "object",
                 "required": [
                   "name",
-                  "phoneNumber",
-                  "email",
-                  "isFavourite",
-                  "contactType"
+                  "phoneNumber"
                 ],
                 "properties": {
                   "name": {
