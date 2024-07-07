@@ -68,9 +68,9 @@
                     "description": "Contact's type",
                     "type": "string",
                     "enum": [
-                      "work",
+                      "personal",
                       "home",
-                      "personal"
+                      "other"
                     ]
                   },
                   "photo": {
@@ -93,7 +93,7 @@
                     "phoneNumber": "+380123456789",
                     "email": "vadnet@ex.com",
                     "isFavourite": true,
-                    "contactType": "work",
+                    "contactType": "other",
                     "photo": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMVF..."
                   }
                 }
