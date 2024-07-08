@@ -29,7 +29,7 @@ requestBody:
           contactType:
             description: "Contact's type"
             type: string
-            enum: ['personal', 'home', 'other']
+            enum: ['work', 'home', 'personal']
           photo:
             description: Contact's photo file (*.jpg, *.png)
             type: string
@@ -45,7 +45,7 @@ requestBody:
             phoneNumber: '+380123456789'
             email: vadnet@ex.com
             isFavourite: true
-            contactType: other
+            contactType: work
             photo: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMVF...'
     application/json:
       schema:

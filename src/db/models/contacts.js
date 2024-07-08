@@ -22,8 +22,8 @@ const contactsSchema = new Schema(
     contactType: {
       type: String,
       required: false,
-      default: 'other',
-      enum: ['personal', 'home', 'other'],
+      default: 'work',
+      enum: ['work', 'home', 'personal'],
     },
 
     userId: { type: Schema.Types.ObjectId, ref: 'users' },

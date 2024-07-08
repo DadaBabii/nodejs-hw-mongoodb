@@ -25,5 +25,5 @@ properties:
   contactType:
     description: "Contact's type"
     type: string
-    enum: ['personal', 'home', 'other']
+    enum: ['work', 'home', 'personal']
     example: 'other'

@@ -30,7 +30,7 @@ requestBody:
             type: boolean
           contactType:
             type: string
-            enum: ['personal', 'home', 'other']
+            enum: ['work', 'home', 'personal']
           photo:
             description: Contact's photo file (*.jpg, *.png, etc.)
             type: string
@@ -86,7 +86,7 @@ responses:
             contactType:
               description: "Contact's type"
               type: string
-              enum: ['personal', 'home', 'other']
+              enum: ['work', 'home', 'personal']
             photo:
               description: "Link to contact's photo"
               type: string

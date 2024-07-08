@@ -36,7 +36,7 @@ parameters:
     name: type
     schema:
       type: string
-      enum: ['personal', 'home', 'other']
+      enum: ['work', 'home', 'personal']
     required: false
 responses:
   '200':
