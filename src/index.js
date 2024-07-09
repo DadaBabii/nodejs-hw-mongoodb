@@ -11,12 +11,3 @@ import { TEMP_UPLOAD_DIR, UPLOAD_DIR } from './constants/index.js';
   await createDirIfNotExists(UPLOAD_DIR);
   setupServer();
 })();
-
-// const bootstrap = async () => {
-//   await initMongoDB();
-//   await createDirIfNotExists(TEMP_UPLOAD_DIR);
-//   await createDirIfNotExists(UPLOAD_DIR);
-//   startServer();
-// };
-
-// void bootstrap();

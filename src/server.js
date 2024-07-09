@@ -20,28 +20,29 @@ const PORT = Number(env(ENV_VARS.PORT, '3000'));
 export const setupServer = () => {
   const app = express();
 
-  app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('/api-docs', swaggerDocs());
+
+  app.use(cors());
+
+  app.use(cookieParser());
 
   app.use(
     pino({
       transport: { target: 'pino-pretty' },
     }),
   );
+  app.use(
+    express.json({
+      type: ['application/json', 'application/vnd.api+json'],
+    }),
+  );
 
-  app.use(cors());
-  app.use(cookieParser());
   app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.get('/', (req, res, next) => {
     res.send('Welcome');
   });
 
-  app.use(
-    express.json({
-      type: ['application/json', 'application/vnd.api+json'],
-    }),
-  );
   app.use(rootRouter);
 
   app.use('*', notFoundHandler);

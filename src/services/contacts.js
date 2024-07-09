@@ -44,12 +44,18 @@ export const getContactById = async (authContactId) => {
   const contact = await ContactsCollection.findOne(authContactId);
   return contact;
 };
-export const createContact = async ({ userId, photo, ...payload }) => {
-  const url = await saveFileToCloudinary(photo);
 
-  const newContact = await ContactsCollection.create({ ...payload, userId: userId, photo: url });
+export const createContact = async (payload, userId) => {
+  const newContact = await ContactsCollection.create({ ...payload, userId: userId });
   return newContact;
 };
+
+// export const createContact = async ({ userId, photo, ...payload }) => {
+//   const url = await saveFileToCloudinary(photo);
+
+//   const newContact = await ContactsCollection.create({ ...payload, userId: userId, photo: url });
+//   return newContact;
+// };
 
 export const deleteContactById = async (authContactId) => {
   const deleteContact = await ContactsCollection.findOneAndDelete(authContactId);

@@ -73,14 +73,29 @@ export const getContactByIdController = async (req, res, next) => {
 
 export const createContactsController = async (req, res) => {
   const { body, file } = req;
+  let photoUrl;
+  if (file) {
+    photoUrl = await saveFileToCloudinary(file);
+  }
 
-  const contact = await createContact({ userId: req.user._id, photo: file, ...body });
+  const contact = await createContact({ ...body, photo: photoUrl }, req.user._id);
   res.status(201).json({
     status: 201,
     message: 'Successfully created a new contact!',
     data: contact,
   });
 };
+
+// export const createContactsController = async (req, res) => {
+//   const { body, file } = req;
+
+//   const contact = await createContact({ userId: req.user._id, photo: file, ...body });
+//   res.status(201).json({
+//     status: 201,
+//     message: 'Successfully created a new contact!',
+//     data: contact,
+//   });
+// };
 
 export const deleteContactByIdController = async (req, res, next) => {
   const authContactId = setAuthContactId(req);
